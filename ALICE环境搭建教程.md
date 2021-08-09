@@ -2,7 +2,6 @@
 
 Chunzheng
 
-[TOC]
 
 ## 1. Git与Github
 
@@ -66,12 +65,14 @@ aliBuild build AliPhysics --defaults user-next-root6
 
 ## 4. 使用ALICE环境
 ```bash
+
 #列出可用软件包
 alienv q
 #进入最新编译的环境，推荐别名ali写入shell配置
 alienv enter AliPhysics/latest
 #也可以不加载环境进行一些基本操作，例如
 alienv setenv AliPhysics/latest -c aliroot myMacro.C+
+
 ```
 
 ## 5. 运行分析任务
@@ -85,8 +86,10 @@ alienv setenv AliPhysics/latest -c aliroot myMacro.C+
 下载需要分析的数据集中的任意AOD文件，注意基于ROOT6的AliPhysics加载动态链接库与ROOT5不同
 
 ```bash
+
 alienv enter AliPhysics/latest
 aliroot runAnalysis.C
+
 ```
 ### 5.2 Grid运行
 
@@ -94,13 +97,13 @@ aliroot runAnalysis.C
 Grid运行链接JAlien网络，需要完成一些准备工作
 
 1. 成为ALICE会员
-    alice.secretariat@cern.ch
-    注册成功可以访问https://alisw.cern.ch/check
+   alice.secretariat@cern.ch
+   注册成功可以访问https://alisw.cern.ch/check
 
 2. 生成证书
-    p12证书 https://ca.cern.ch/ca/user/Request.aspx?template=EE2User
+   p12证书 https://ca.cern.ch/ca/user/Request.aspx?template=EE2User
 
-    crt证书 https://cafiles.cern.ch/cafiles/certificates/Grid.aspx
+   crt证书 https://cafiles.cern.ch/cafiles/certificates/Grid.aspx
     
 3. 在浏览器中注册证书
 
@@ -113,20 +116,24 @@ Grid运行链接JAlien网络，需要完成一些准备工作
 5. 利用Grid tools将.p12证书转化为两个验证文件
 
    ```bash
+   
    #将.p12密钥转化为两个文件置于~/.globus
    openssl pkcs12 -clcerts -nokeys -in ~/Downloads/myCertificate.p12 -out ~/.globus/usercert.pem
    openssl pkcs12 -nocerts -in ~/Downloads/myCertificate.p12 -out ~/.globus/userkey.pem
    #注意权限设置
    chmod 0400 ~/.globus/userkey.pem
+   
    ```
 
 运行任务
 ```bash
+
 alienv enter AliPhysics/latest
 #alien-token-destroy
 #可在加载环境后设置token，后面多次提交任务将不需要输入PEM密码
 alien-token-init YOUR_ALIEN_USERNAME
 aliroot runAnalysis.C
+
 ```
 ROOT6支持在提交Grid分析任务之前进行测试，具体设置可参考ALICE Analysis Tutorial documentation
 
