@@ -136,7 +136,7 @@ aliroot runAnalysis.C
 ```
 ### 5.3 LEGO Train运行
 
-利用LEGO Train分析数据必须要将自己的代码加入Aliphysics（参考第4章）。这种方法保证了在LEGO Train上运行时代码在运行上不会出错，不会影响其他人的工作。参考[Analysis Trains with the LEGO Framework](https://twiki.cern.ch/twiki/bin/viewauth/ALICE/AnalysisTrains)
+利用LEGO Train分析数据必须要将自己的代码加入Aliphysics（参考第4章）。这种方法保证了在LEGO Train上代码不会出错，不会影响其他人的工作。参考[Analysis Trains with the LEGO Framework](https://twiki.cern.ch/twiki/bin/viewauth/ALICE/AnalysisTrains)
 
 强烈建议在本地预先进行Train测试，测试需要如下文件
 
