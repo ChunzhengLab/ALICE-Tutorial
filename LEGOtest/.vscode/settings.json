@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "handlers.C": "cpp",
+        "globalvariables.C": "cpp",
+        "generate.C": "cpp"
+    }
+}

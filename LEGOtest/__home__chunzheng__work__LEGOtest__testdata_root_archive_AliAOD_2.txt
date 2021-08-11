@@ -1,0 +1,2 @@
+/home/chunzheng/work/MyLEGO/testdata/0001/AliAOD.root
+/home/chunzheng/work/MyLEGO/testdata/0002/AliAOD.root
