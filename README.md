@@ -22,7 +22,7 @@ git不会走系统设置的全局代理，需要手动配置，目前有以下�
 
 1. 修改host（容易失效）
 2. 设置git代理（明确自己使用的代理协议和代理地址代理端口）
-3. proxychains （对Big Sur不友好，ubuntu可apt，centos需要编译安装）https://github.com/rofl0r/proxychains-ng
+3. proxychains （对macOS高版本Big Sur、Monterey不友好，需要关闭SIP，ubuntu可apt，centos需要编译安装）https://github.com/rofl0r/proxychains-ng
 
 
 ## 2. 编译ALICE环境
@@ -30,7 +30,7 @@ ALICE环境事实上不光是由Aliphysics软件构成的，而是类似于conda
 
 最简单最可靠的编译方法是利用官方的aliBuild工具，对于Centos7和Centos8，aliBulid可以直接由yum获得，对于macOS 可以使用homebrew，对于ubuntu等其他系统可以使用pip
 
-编译始终报错可以考虑aliDocker，aliDocker自动包含了aliBuild，但是并没有包含编译必要的软件包，依然需要手动安装依赖
+编译始终报错可以考虑aliDock https://github.com/alidock/alidock 。aliDocker自动包含了aliBuild，但是并没有包含编译必要的软件包，依然需要手动安装依赖，速度慢，但是最稳妥，经过实测2020款Macbook Air设置4核编译成套环境需要12+小时。
 
 ```bash
 mkdir -p ~/alice
@@ -62,7 +62,7 @@ git clone git@github.com:USERNAME/AliPhysics.git
 aliBuild build AliPhysics --defaults user-next-root6
 #aliBuild clean
 ```
-强烈建议在本地编译通过后再提交pr，并联系联系管理人员merge代码
+强烈建议在本地编译通过后再提交PR，并联系联系管理人员merge代码
 
 ## 4. 使用ALICE环境
 ```bash
@@ -129,7 +129,7 @@ Grid运行不需要将自己的分析代码编译入AliPhysics
 
 alienv enter AliPhysics/latest
 #alien-token-destroy
-#可在加载环境后设置token，后面多次提交任务将不需要输入PEM密码
+#ROOT5可在加载环境后设置token，后面多次提交任务将不需要输入PEM密码
 alien-token-init YOUR_ALIEN_USERNAME
 aliroot runAnalysis.C
 
