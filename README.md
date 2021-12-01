@@ -30,7 +30,7 @@ ALICE环境事实上不光是由Aliphysics软件构成的，而是类似于conda
 
 最简单最可靠的编译方法是利用官方的aliBuild工具，对于Centos7和Centos8，aliBulid可以直接由yum获得，对于macOS 可以使用homebrew，对于ubuntu等其他系统可以使用pip
 
-编译始终报错可以考虑aliDock https://github.com/alidock/alidock 。aliDocker自动包含了aliBuild，但是并没有包含编译必要的软件包，依然需要手动安装依赖，速度慢，但是最稳妥，经过实测2020款Macbook Air设置4核编译成套环境需要12+小时。
+~~编译始终报错可以考虑aliDock https://github.com/alidock/alidock 。aliDocker自动包含了aliBuild，但是并没有包含编译必要的软件包，依然需要手动安装依赖，速度慢，但是最稳妥，经过实测2020款Macbook Air设置4核编译成套环境需要12+小时。~~ alidock已经于今年八月弃用
 
 ```bash
 mkdir -p ~/alice
@@ -59,7 +59,12 @@ git clone git@github.com:USERNAME/AliPhysics.git
 #这里应该将自己的代码加入AliPhysics
 ...
 #重新编译AliPhysics
-aliBuild build AliPhysics --defaults user-next-root6
+#最新
+aliBuild build AliPhysics --defaults o2
+#数月前更新，可能有报错（查看alidist）
+#aliBuild build AliPhysics --defaults next-root6
+#aliBuild build AliPhysics --defaults user-next-root6
+
 #aliBuild clean
 ```
 强烈建议在本地编译通过后再提交PR，并联系联系管理人员merge代码
@@ -75,6 +80,25 @@ alienv enter AliPhysics/latest
 alienv setenv AliPhysics/latest -c aliroot myMacro.C+
 
 ```
+
+当git仓库中的AliPhysics更新后，需要更新自己本地的AliPhysics时，应该进入alice文件夹下的AliPhysics文件夹运行
+
+```bash
+git pull --rebase
+```
+如果远端AliPhysics没有大得改动，可以运行
+```bash
+git pull --fetch
+```
+只下载新添加文件部分，原来编译好的动态连接库不会更新，可以增加编译速度。
+
+重新编译AliPhysics不需要很长的时间，只需进入sw/BUILD文件夹make即可，运行如下命令
+
+```bash
+cd $ALIBUILD_WORK_DIR/BUILD/AliPhysics-latest/AliPhysics
+alienv setenv GCC-Toolchain/latest -c cmake --build . -- -j 2 install
+```
+-j2 可以改成自己需要的CPU核心数目。MacBook Air 2020这种垃圾-j2就可以了，运气不好-j4都会超过温控墙直接死机。
 
 ## 5. 运行分析任务
 本地与grid运行需要以下文件
@@ -130,10 +154,22 @@ Grid运行不需要将自己的分析代码编译入AliPhysics
 alienv enter AliPhysics/latest
 #alien-token-destroy
 #ROOT5可在加载环境后设置token，后面多次提交任务将不需要输入PEM密码
+#ROOT6版本不需要token
 alien-token-init YOUR_ALIEN_USERNAME
 aliroot runAnalysis.C
 
 ```
+
+连接alien服务器
+```bash
+
+#ROOT5
+aliensh
+#ROOT6
+alien.py
+
+```
+
 ### 5.3 LEGO Train运行
 
 利用LEGO Train分析数据必须要将自己的代码加入Aliphysics（参考第4章）。这种方法保证了在LEGO Train上代码不会出错，不会影响其他人的工作。参考[Analysis Trains with the LEGO Framework](https://twiki.cern.ch/twiki/bin/viewauth/ALICE/AnalysisTrains)
@@ -170,15 +206,17 @@ chmod 755 runTest.sh
 
 测试数据需要至少两个AliAOD.root文件，它们应该被放置在不同编号的文件夹内如0001，0002
 
-generate.C将以如下规则读取一个txt文件
+generate.C将自动生成lego_train.sh等文件
+
+lego_train.sh以如下规则读取一个txt文件
 
 > The name of the folders are build up out of the TEST_Dir, archive name (if [AOD](https://twiki.cern.ch/twiki/bin/view/ALICE/AOD)=2 aod_archive.zip, otherwise root_archive.zip ), FILE_PATTERN ([AliAOD](https://twiki.cern.ch/twiki/bin/edit/ALICE/AliAOD?topicparent=ALICE.AnalysisTrains;nowysiwyg=1).root) and the number of test files (2 or higher). So just take the dataset  you want to analyze, copy two of the files locally and create the a text file with the absolute paths to the test files. This text file has to  be in the same folder as runTest.sh and its name should be  x_root_archive_AliAOD_2.txt where 'x' is the string which is in env.sh  in TEST_DIR (replacing "/" with "__"). Of course if you're analyzing  aod_archive.zip, the correct name of the file is  x_aod_archive_AliAOD_2.txt
 
 注意：该文件内需要写明本地数据的地址！如下例
 
 ```
-/home/chunzheng/work/MyLEGO/testdata/0001/AliAOD.root
-/home/chunzheng/work/MyLEGO/testdata/0002/AliAOD.root
+/home/LEGO/testdata/0001/AliAOD.root
+/home/LEGO/testdata/0002/AliAOD.root
 ```
 
 
