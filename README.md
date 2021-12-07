@@ -32,6 +32,7 @@ ALICE环境事实上不光是由Aliphysics软件构成的，而是类似于conda
 
 ~~编译始终报错可以考虑aliDock https://github.com/alidock/alidock 。aliDocker自动包含了aliBuild，但是并没有包含编译必要的软件包，依然需要手动安装依赖，速度慢，但是最稳妥，经过实测2020款Macbook Air设置4核编译成套环境需要12+小时。~~ alidock已经于今年八月弃用
 
+
 ```bash
 mkdir -p ~/alice
 cd ~/alice
@@ -67,7 +68,18 @@ aliBuild build AliPhysics --defaults o2
 
 #aliBuild clean
 ```
-强烈建议在本地编译通过后再提交PR，并联系联系管理人员merge代码
+
+如果编译总是失败目前alidock依然是一个还行的选择，但是alidock自带的gcc版本过低，root与aliroot均不支持。
+
+如果采用--defaults o2参数编译，运行root或者aliroot均会报错，一个勉强可行的方案是将需要的动态链接库（libstdc++.so.6、libgfortran.so.5等）软连接至利用aliBuild编译好的GCC-ToolChain中的动态连接库（需要root权限）。注意，重启docker一定要再运行一遍。
+
+```bash
+alidock root
+#以root方式进入docker
+ln -sf /persist/sw/slc7_x86-64/GCC-Toolchain/v10.2.0-alice2-6/lib64/libstdc++.so.6.0.28 /usr/lib64/libstdc++.so.6
+ln -sf /persist/sw/slc7_x86-64/GCC-Toolchain/v10.2.0-alice2-6/lib64/libgfortran.so.5.0.0 /usr/lib64/libgfortran.so.5
+```
+
 
 ## 4. 使用ALICE环境
 ```bash
