@@ -22,7 +22,7 @@ git不会走系统设置的全局代理，需要手动配置，目前有以下�
 
 1. 修改host（容易失效）
 2. 设置git代理（明确自己使用的代理协议和代理地址代理端口）
-3. proxychains （对macOS高版本Big Sur、Monterey不友好，需要关闭SIP，ubuntu可apt，centos需要编译安装）https://github.com/rofl0r/proxychains-ng
+3. proxychains （对macOS高版本Big Sur不友好，需要关闭SIP；Monterey尚未支持；ubuntu可apt；centos需要编译安装）https://github.com/rofl0r/proxychains-ng
 
 
 ## 2. 编译ALICE环境
